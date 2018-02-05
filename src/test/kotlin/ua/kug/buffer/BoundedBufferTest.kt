@@ -2,10 +2,9 @@ package ua.kug.buffer
 
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
-import org.junit.Assert.*
 import org.junit.Test
 
-class BoundedBufferTest{
+class BoundedBufferTest {
 
     @Test
     fun createBuffer() {
@@ -13,54 +12,55 @@ class BoundedBufferTest{
     }
 
     @Test
-    fun createTypedBufferWith(){
+    fun createTypedBuffer() {
         val boundedBuffer: BoundedBuffer<Any> = BoundedBuffer()
     }
 
     @Test
-    fun sizeOfDefaultBuffer(){
+    fun sizeOfDefaultBuffer() {
         val boundedBuffer: BoundedBuffer<Any> = BoundedBuffer()
+
         //assertEquals(10, boundedBuffer.size)
         boundedBuffer.size shouldBe 10
     }
 
     @Test
-    fun sizeOfBuffer(){
+    fun sizeOfBuffer() {
         val boundedBuffer: BoundedBuffer<Any> = BoundedBuffer(3)
+
         boundedBuffer.size shouldBe 3
     }
 
     @Test
-    fun sizeShouldNotBeNegative(){
+    fun sizeShouldNotBeNegative() {
         shouldThrow<IllegalArgumentException> {
             BoundedBuffer<Any>(-2)
         }.message shouldBe "Negative size"
     }
 
     @Test
-    fun valuesShouldBeEmpty(){
+    fun valuesShouldBeEmpty() {
         val boundedBuffer: BoundedBuffer<Any> = BoundedBuffer()
+
         boundedBuffer.values() shouldBe emptyList<Any>()
-        val values: List<Any> = boundedBuffer.values()
     }
 
     @Test
-    fun putNull(){
+    fun putNull() {
         val boundedBuffer: BoundedBuffer<String> = BoundedBuffer()
         //boundedBuffer.put(null)
     }
 
     @Test
-    fun putValue(){
+    fun putValue() {
         val boundedBuffer: BoundedBuffer<String> = BoundedBuffer()
         boundedBuffer.put("abc")
 
         boundedBuffer.values() shouldBe listOf("abc")
     }
 
-
     @Test
-    fun putValues(){
+    fun putValues() {
         val boundedBuffer: BoundedBuffer<String> = BoundedBuffer()
         with(boundedBuffer) {
             put("a")
@@ -72,7 +72,7 @@ class BoundedBufferTest{
     }
 
     @Test
-    fun putValuesBounded(){
+    fun putValuesBounded() {
         val boundedBuffer: BoundedBuffer<String> = BoundedBuffer(2)
         with(boundedBuffer) {
             put("a")

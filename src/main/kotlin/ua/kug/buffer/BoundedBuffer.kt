@@ -2,12 +2,10 @@ package ua.kug.buffer
 
 class BoundedBuffer<T>(override val size: Int = 10) : Buffer<T> {
 
-    val size1 = 10
-
     private val list = mutableListOf<T>()
 
     init {
-        if(size < 1) throw IllegalArgumentException("Negative size")
+        if (size < 1) throw IllegalArgumentException("Negative size")
         //val sign = if(size < 1) "negative" else "positive"
     }
 

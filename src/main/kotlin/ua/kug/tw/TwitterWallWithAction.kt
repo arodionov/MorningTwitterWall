@@ -1,5 +1,6 @@
 package ua.kug.tw
 
+import kotlinx.coroutines.experimental.async
 import twitter4j.Status
 import twitter4j.TwitterStream
 import twitter4j.util.function.Consumer
@@ -14,19 +15,25 @@ class TwitterWallWithAction(
     private val buffer = BoundedBuffer<String>(size)
 
     init {
-        val filterdTags = hashatgs.filter { it.isNotBlank() }
-        if(filterdTags.isEmpty()) throw IllegalArgumentException("Is empty or blank")
+        val filteredTags = hashatgs.filter { it.isNotBlank() }
+        if (filteredTags.isEmpty()) throw IllegalArgumentException("Is empty or blank")
         twitterStream
-                .onStatus{action(it)}
-                .filter(*filterdTags.toTypedArray())
+                .onStatus {
+                    it.run {
+                        action(it)
+                        updateBuffer(it.text)
+                    }
+                }
+                .filter(*filteredTags.toTypedArray())
     }
 
     fun action(status: Status) {
-        actions.forEach {it.apply { status }}
+         async { actions.forEach { it.accept(status) } }
     }
 
     internal fun updateBuffer(msg: String) {
         buffer.put(msg)
     }
+
     fun tweets() = buffer.values()
 }

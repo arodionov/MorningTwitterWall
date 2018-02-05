@@ -4,10 +4,10 @@ import twitter4j.Status
 import twitter4j.Twitter
 import twitter4j.util.function.Consumer
 
-class RetweetAction(val twitter: Twitter, val stopWords : List<String> = emptyList()) : Consumer<Status> {
+class RetweetAction(private val twitter: Twitter, private val stopWords: List<String> = emptyList()) : Consumer<Status> {
 
     override fun accept(status: Status) {
-        if(isAcceptable(status)) {
+        if (isAcceptable(status)) {
             twitter.retweetStatus(status.id)
         }
     }
