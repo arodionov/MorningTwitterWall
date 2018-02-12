@@ -1,8 +1,10 @@
 package ua.kug.boot
 
 import org.springframework.stereotype.Service
+import twitter4j.TwitterFactory
 import twitter4j.TwitterStreamFactory
 import twitter4j.util.function.Consumer
+import ua.kug.tw.RetweetAction
 import ua.kug.tw.TwitterWallWithAction
 import javax.annotation.PostConstruct
 
@@ -22,10 +24,10 @@ class TwitterService {
                     hashatgs = tags,
                     size = 5,
                     actions = listOf(
-//                    RetweetAction(
-//                            twitter = TwitterFactory().instance,
-//                            stopWords = listOf("ugly", "no soup", "bad", "yegor256")
-//                    ),
+                            RetweetAction(
+                                    twitter = TwitterFactory().instance,
+                                    stopWords = listOf("ugly", "no soup", "bad", "yegor256")
+                            ),
                             Consumer {
                                 println(it.text)
                                 println(Thread.currentThread().name)

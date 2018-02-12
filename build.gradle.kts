@@ -1,8 +1,4 @@
 import org.gradle.api.tasks.bundling.Jar
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-group = "ua.kug"
-version = "1.0-SNAPSHOT"
 
 plugins {
     val kotlinVer = "1.2.21"
@@ -19,16 +15,17 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
     }
-}
-
-tasks.withType<Jar> {
-    baseName = "morning-demo"
 }
 
 apply {
     plugin("org.springframework.boot")
+}
+
+tasks.withType<Jar> {
+    baseName = "morning-demo"
+    version = "1.0-SNAPSHOT"
 }
 
 dependencies {
@@ -45,11 +42,6 @@ dependencies {
     testCompile("io.kotlintest", "kotlintest", "2.0.7")
     testCompile("com.nhaarman", "mockito-kotlin", "1.5.0")
     testCompile("org.springframework.boot", "spring-boot-starter-test")
-}
-
-configure<JavaPluginConvention> {
-    setSourceCompatibility(1.8)
-    setTargetCompatibility(1.8)
 }
 
 repositories {
