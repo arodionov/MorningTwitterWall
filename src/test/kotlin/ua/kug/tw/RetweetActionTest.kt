@@ -1,11 +1,7 @@
 package ua.kug.tw
 
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.never
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.*
 import io.kotlintest.specs.FunSpec
-import org.mockito.ArgumentMatchers.anyLong
 import twitter4j.Status
 import twitter4j.Twitter
 
@@ -23,7 +19,7 @@ class RetweetActionTest : FunSpec() {
             val action = RetweetAction(twitter)
             action.accept(status)
 
-            verify(twitter, never()).retweetStatus(anyLong())
+            verify(twitter, never()).retweetStatus(any())
         }
 
         test("do retweet original status") {
@@ -34,7 +30,7 @@ class RetweetActionTest : FunSpec() {
             val action = RetweetAction(twitter)
             action.accept(status)
 
-            verify(twitter).retweetStatus(anyLong())
+            verify(twitter).retweetStatus(any())
         }
 
         test("do retweet original status with tweet id") {
@@ -76,7 +72,7 @@ class RetweetActionTest : FunSpec() {
             val action = RetweetAction(twitter, stopWords)
             action.accept(status)
 
-            verify(twitter, never()).retweetStatus(anyLong())
+            verify(twitter, never()).retweetStatus(any())
         }
     }
 }
