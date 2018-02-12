@@ -21,8 +21,8 @@ dependencies {
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.2")
     testCompile(kotlin("test-junit"))
     testCompile("junit", "junit", "4.12")
-    testCompile("io.kotlintest", "kotlintest", "2.0.1")
-    testCompile("com.nhaarman", "mockito-kotlin", "0.9.0")
+    testCompile("io.kotlintest", "kotlintest", "2.0.7")
+    testCompile("com.nhaarman", "mockito-kotlin", "1.5.0")
 }
 
 repositories {
