@@ -1,28 +1,55 @@
+import org.gradle.api.tasks.bundling.Jar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+group = "ua.kug"
+version = "1.0-SNAPSHOT"
+
 plugins {
-    application
-    kotlin("jvm") version "1.2.20"
+    val kotlinVer = "1.2.21"
+
+    kotlin("plugin.allopen") version kotlinVer
+    kotlin("plugin.spring") version kotlinVer
+    kotlin("jvm") version kotlinVer
 }
 
-application {
-    mainClassName = "ua.kug.TwitterWallJSON"
+buildscript {
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE")
+    }
 }
 
-val twitter4jVer = "4.0.6"
-val jacksoCoreVer = "2.9.2"
+tasks.withType<Jar> {
+    baseName = "morning-demo"
+}
+
+apply {
+    plugin("org.springframework.boot")
+}
 
 dependencies {
-    compile(kotlin("stdlib"))
+    val twitter4jVer = "4.0.6"
+
+    compile(kotlin("stdlib-jdk8"))
+    compile(kotlin("reflect"))
     compile("org.twitter4j", "twitter4j-core", twitter4jVer)
     compile("org.twitter4j", "twitter4j-stream", twitter4jVer)
-    compile("io.javalin", "javalin", "1.0.0")
-    compile("com.fasterxml.jackson.core", "jackson-core", jacksoCoreVer)
-    compile("com.fasterxml.jackson.core", "jackson-databind", jacksoCoreVer)
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.1")
-    testCompile("org.jetbrains.kotlin", "kotlin-test-junit", "1.2.21")
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.2")
+    compile("org.springframework.boot", "spring-boot-starter-web")
+    testCompile(kotlin("test-junit"))
     testCompile("junit", "junit", "4.12")
-    testCompile("io.kotlintest", "kotlintest", "2.0.1")
-    testCompile("com.nhaarman", "mockito-kotlin", "0.9.0")
+    testCompile("io.kotlintest", "kotlintest", "2.0.7")
+    testCompile("com.nhaarman", "mockito-kotlin", "1.5.0")
+    testCompile("org.springframework.boot", "spring-boot-starter-test")
+}
 
+configure<JavaPluginConvention> {
+    setSourceCompatibility(1.8)
+    setTargetCompatibility(1.8)
 }
 
 repositories {
