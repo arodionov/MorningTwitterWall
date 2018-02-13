@@ -9,7 +9,7 @@ import twitter4j.Twitter
 class RetweetActionTest : FunSpec() {
 
     init {
-        val twitter: Twitter = mock()
+        val twitter: Twitter = mock{}
 
         test("do not retweet reetweets") {
             val status: Status = mock {

@@ -18,17 +18,13 @@ class TwitterWallWithAction(
         val filteredTags = hashatgs.filter { it.isNotBlank() }
         if (filteredTags.isEmpty()) throw IllegalArgumentException("Is empty or blank")
         twitterStream
-                .onStatus {
-                    it.run {
-                        action(it)
-                        updateBuffer(it.text)
-                    }
-                }
+                .onStatus { action(it) }
                 .filter(*filteredTags.toTypedArray())
     }
 
     fun action(status: Status) {
-         async { actions.forEach { it.accept(status) } }
+        async { actions.forEach { it.accept(status) } }
+        updateBuffer(status.text)
     }
 
     internal fun updateBuffer(msg: String) {

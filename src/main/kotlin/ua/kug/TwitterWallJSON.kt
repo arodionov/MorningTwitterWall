@@ -1,7 +1,6 @@
 package ua.kug
 
 import io.javalin.Javalin
-import twitter4j.Status
 import twitter4j.TwitterFactory
 import twitter4j.TwitterStreamFactory
 import twitter4j.util.function.Consumer
