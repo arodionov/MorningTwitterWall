@@ -10,19 +10,23 @@ import twitter4j.TwitterFactory
 import twitter4j.TwitterStreamFactory
 import twitter4j.util.function.Consumer
 import ua.kug.tw.RetweetAction
+import ua.kug.tw.TwitterWall
 import ua.kug.tw.TwitterWallWithAction
 
 @SpringBootApplication
 class Application {
 
     @Bean
-    fun twitterService(tw: TwitterWallWithAction): TwitterService {
-        return TODO()
+    fun twitterService(tw: TwitterWall): TwitterService = object : TwitterService() {
+        override fun createTwitterWall(): TwitterWall {
+            println("TW $tw")
+            return tw
+        }
     }
 
     @Bean
     @Scope("prototype")
-    fun twitterWall(@Value("#Java, #Kotlin") tags: List<String>, actions: List<Consumer<Status>>) =
+    fun twitterWall(@Value("#Scala, #Kotlin") tags: List<String>, actions: List<Consumer<Status>>) =
             TwitterWallWithAction(
                     twitterStream = TwitterStreamFactory().instance,
                     hashatgs = tags,
@@ -31,10 +35,10 @@ class Application {
             )
 
     //@Bean
-    fun retweetAction() =
+    fun retweetAction(@Value("ugly, no soup, bad, yegor256") stopWords: List<String>) =
             RetweetAction(
                     twitter = TwitterFactory().instance,
-                    stopWords = listOf("ugly", "no soup", "bad", "yegor256")
+                    stopWords = stopWords
             )
 
     @Bean

@@ -9,8 +9,8 @@ import ua.kug.buffer.BoundedBuffer
 class TwitterWallWithAction(
         twitterStream: TwitterStream,
         hashatgs: List<String>,
-        val size: Int = 10,
-        val actions: List<Consumer<Status>> = emptyList()) {
+        override val size: Int = 10,
+        private val actions: List<Consumer<Status>> = emptyList()) : TwitterWall {
 
     private val buffer = BoundedBuffer<String>(size)
 
@@ -27,7 +27,7 @@ class TwitterWallWithAction(
                 .filter(*filteredTags.toTypedArray())
     }
 
-    fun action(status: Status) {
+    internal fun action(status: Status) {
          async { actions.forEach { it.accept(status) } }
     }
 
@@ -35,5 +35,5 @@ class TwitterWallWithAction(
         buffer.put(msg)
     }
 
-    fun tweets() = buffer.values()
+    override fun tweets() = buffer.values()
 }
