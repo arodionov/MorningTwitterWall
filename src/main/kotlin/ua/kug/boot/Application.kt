@@ -17,25 +17,24 @@ import ua.kug.tw.TwitterWallWithAction
 class Application {
 
     @Bean
-    fun twitterService(tw: TwitterWall): TwitterService = object : TwitterService() {
-        override fun createTwitterWall(): TwitterWall {
-            println("TW $tw")
-            return tw
-        }
-    }
+    fun twitterService(tw: TwitterWall, actions: List<Consumer<Status>>): TwitterService =
+            object : TwitterService(tw) {
+                override fun createTwitterWall(tags: List<String>): TwitterWall {
+                    return twitterWall(tags, actions)
+                }
+            }
 
     @Bean
     @Scope("prototype")
-    fun twitterWall(@Value("#Scala, #Kotlin") tags: List<String>, actions: List<Consumer<Status>>) =
+    fun twitterWall(@Value("\${tw.hashTags}") tags: List<String>, actions: List<Consumer<Status>>) =
             TwitterWallWithAction(
                     twitterStream = TwitterStreamFactory().instance,
-                    hashatgs = tags,
-                    size = 5,
+                    hashTags = tags,
                     actions = actions
             )
 
-    //@Bean
-    fun retweetAction(@Value("ugly, no soup, bad, yegor256") stopWords: List<String>) =
+    @Bean
+    fun retweetAction(@Value("\${tw.stopWords}") stopWords: List<String>) =
             RetweetAction(
                     twitter = TwitterFactory().instance,
                     stopWords = stopWords

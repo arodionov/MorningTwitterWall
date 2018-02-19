@@ -2,16 +2,14 @@ package ua.kug.boot
 
 import ua.kug.tw.TwitterWall
 
-abstract class TwitterService() {
-
-    private var twitterWall = createTwitterWall()
+abstract class TwitterService(var twitterWall: TwitterWall) {
 
     fun tweets() = twitterWall.tweets()
 
     fun subscribe(tags: List<String>) {
-        twitterWall = createTwitterWall()
+        twitterWall = createTwitterWall(tags)
     }
 
-    abstract fun createTwitterWall(): TwitterWall
+    abstract fun createTwitterWall(tags: List<String>): TwitterWall
 
 }

@@ -8,14 +8,14 @@ import ua.kug.buffer.BoundedBuffer
 
 class TwitterWallWithAction(
         twitterStream: TwitterStream,
-        hashatgs: List<String>,
+        hashTags: List<String>,
         override val size: Int = 10,
         private val actions: List<Consumer<Status>> = emptyList()) : TwitterWall {
 
     private val buffer = BoundedBuffer<String>(size)
 
     init {
-        val filteredTags = hashatgs.filter { it.isNotBlank() }
+        val filteredTags = hashTags.filter { it.isNotBlank() }
         if (filteredTags.isEmpty()) throw IllegalArgumentException("Is empty or blank")
         twitterStream
                 .onStatus {
@@ -28,7 +28,7 @@ class TwitterWallWithAction(
     }
 
     internal fun action(status: Status) {
-         async { actions.forEach { it.accept(status) } }
+        async { actions.forEach { it.accept(status) } }
     }
 
     internal fun updateBuffer(msg: String) {
