@@ -5,15 +5,14 @@ version = "0.0.1-SNAPSHOT"
 
 val mainClass = "ua.kug.TwitterWallJSONKt"
 
-
-application {
-    mainClassName = mainClass
-}
-
 plugins {
     application
     java
     kotlin("jvm") version "1.2.40"
+}
+
+application {
+    mainClassName = mainClass
 }
 
 dependencies {
