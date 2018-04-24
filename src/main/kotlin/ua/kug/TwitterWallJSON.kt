@@ -20,20 +20,20 @@ fun main(args: Array<String>) {
     val app = Javalin.create().port(Integer.valueOf(prop.getProperty("server.port", "7000"))).start()
     app.get("/") { ctx -> ctx.result("Hello World") }
 
-    val configurationBuilder = ConfigurationBuilder()
-    configurationBuilder.setDebugEnabled(true)
+    val configuration = ConfigurationBuilder().setDebugEnabled(true)
             .setOAuthConsumerKey(prop.getProperty("oauth.consumerKey"))
             .setOAuthConsumerSecret(prop.getProperty("oauth.consumerSecret"))
             .setOAuthAccessToken(prop.getProperty("oauth.accessToken"))
             .setOAuthAccessTokenSecret(prop.getProperty("oauth.accessTokenSecret"))
+            .build()
 
     val twitterWall = TwitterWallWithAction(
-            twitterStream = TwitterStreamFactory(configurationBuilder.build()).instance,
+            twitterStream = TwitterStreamFactory(configuration).instance,
             hashatgs = prop.getProperty("app.hashatgs", "#KUG,#MorningAtLohika,#Kotlin").split(","),
             size = 5,
             actions = listOf(
                     RetweetAction(
-                            twitter = TwitterFactory().instance,
+                            twitter = TwitterFactory(configuration).instance,
                             stopWords = prop.getProperty("app.stopwords", "ugly,no soup,bad,yegor256").split(",")
                     ),
                     Consumer {
