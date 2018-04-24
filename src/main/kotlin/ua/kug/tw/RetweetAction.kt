@@ -13,7 +13,7 @@ class RetweetAction(private val twitter: Twitter, private val stopWords: List<St
     }
 
     private fun isAcceptable(status: Status) =
-            !(status.isRetweet or status.isRetweet) && isNotBadStatus(status)
+            !(status.isRetweet or status.isRetweetedByMe) && isNotBadStatus(status)
 
     private fun isNotBadStatus(status: Status) = stopWords.none { it in status.text }
 }
