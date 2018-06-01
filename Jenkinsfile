@@ -83,9 +83,6 @@ pipeline() {
 
         failure {
             script {
-                def message = "BUILD SUCCESS: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]\nCheck console output at: ${env.BUILD_URL}"
-                slackSend baseUrl: JENKINS_HOOKS, color: "danger", message: message.toString()
-
                 slackSend(
                     baseUrl: "${env.JENKINS_HOOKS}",
                     token: "${env.SLACK_AUTOMATION_TOKEN}",
