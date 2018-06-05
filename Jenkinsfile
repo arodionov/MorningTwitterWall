@@ -3,7 +3,6 @@
 def server = Artifactory.server "Artifactory"
 def gradle = Artifactory.newGradleBuild()
 def buildInfo = Artifactory.newBuildInfo()
-buildInfo.env.capture = true
 
 pipeline() {
 
@@ -39,10 +38,13 @@ pipeline() {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'master') {
-                        gradle.run rootDir: "./", buildFile: 'build.gradle.kts', tasks: 'clean build artifactoryPublish'
+                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle.kts', tasks: 'clean build artifactoryPublish'
                     } else {
-                        gradle.run rootDir: "./", buildFile: 'build.gradle.kts', tasks: 'clean build'
+                        buildInfo = gradle.run rootDir: "./", buildFile: 'build.gradle.kts', tasks: 'clean build'
                     }
+                    buildInfo.env.filter.addExclude("*TOKEN*")
+                    buildInfo.env.filter.addExclude("*HOOK*")
+                    buildInfo.env.collect()
                 }
             }
         }
