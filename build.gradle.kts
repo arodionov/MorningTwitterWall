@@ -1,10 +1,18 @@
+import org.gradle.jvm.tasks.Jar
+
+group = "com.lohika.morning"
+version = "0.0.1-SNAPSHOT"
+
+val mainClass = "ua.kug.TwitterWallJSONKt"
+
 plugins {
     application
-    kotlin("jvm") version "1.2.21"
+    java
+    kotlin("jvm") version "1.2.40"
 }
 
 application {
-    mainClassName = "ua.kug.TwitterWallJSONKt"
+    mainClassName = mainClass
 }
 
 dependencies {
@@ -27,4 +35,20 @@ dependencies {
 
 repositories {
     jcenter()
+}
+
+val fatJar = task("fatJar", type = Jar::class) {
+    manifest {
+        attributes["Implementation-Version"] = version
+        attributes["Main-Class"] = mainClass
+    }
+    from(configurations.runtime.map({ if (it.isDirectory) it else zipTree(it) }))
+    with(tasks["jar"] as CopySpec)
+}
+
+
+tasks {
+    "build" {
+        dependsOn(fatJar)
+    }
 }

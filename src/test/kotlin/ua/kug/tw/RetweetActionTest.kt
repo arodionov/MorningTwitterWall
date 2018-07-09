@@ -23,11 +23,14 @@ class RetweetActionTest : FunSpec() {
         }
 
         test("do retweet original status") {
+            val stopWords = listOf("bad", "ugly")
             val status: Status = mock {
                 on { isRetweet } doReturn false
+                on { isRetweetedByMe } doReturn false
+                on { text } doReturn "very good talk"
             }
 
-            val action = RetweetAction(twitter)
+            val action = RetweetAction(twitter, stopWords)
             action.accept(status)
 
             verify(twitter).retweetStatus(any())
